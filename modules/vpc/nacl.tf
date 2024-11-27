@@ -1,46 +1,34 @@
-# Network ACL para as subnets do banco de dados
-resource "aws_network_acl" "db_receive_traffic_acl" {
-  vpc_id = aws_vpc.main
+# NACL para subnets do banco de dados
+resource "aws_network_acl" "database" {
+  vpc_id = aws_vpc.main.id
+  subnet_ids = aws_subnet.database[*].id
+
+  tags = {
+    Name        = "${var.environment}-database-nacl"
+    Environment = var.environment
+  }
 }
 
-# Regras de entrada para tráfego PostgreSQL
-resource "aws_network_acl_rule" "db_receive_traffic_acl_ingress" {
-  for_each       = local.queue
-  network_acl_id = aws_network_acl.db_receive_traffic_acl.id
-  rule_number    = each.value.rule_number
+# Regra de entrada - permite tráfego PostgreSQL (porta 5432)
+resource "aws_network_acl_rule" "database_inbound_postgresql" {
+  network_acl_id = aws_network_acl.database.id
+  rule_number    = 100
   protocol       = "tcp"
   rule_action    = "allow"
   egress         = false
+  cidr_block     = local.vpc_cidr
   from_port      = 5432
   to_port        = 5432
-  cidr_block     = each.value.cidr_block
 }
 
-# Regras de saída para tráfego PostgreSQL
-resource "aws_network_acl_rule" "db_receive_traffic_acl_egress" {
-  for_each       = local.queue
-  network_acl_id = aws_network_acl.db_receive_traffic_acl.id
-  rule_number    = each.value.rule_number
+# Regra de saída - permite tráfego de retorno
+resource "aws_network_acl_rule" "database_outbound_ephemeral" {
+  network_acl_id = aws_network_acl.database.id
+  rule_number    = 100
   protocol       = "tcp"
   rule_action    = "allow"
   egress         = true
-  from_port      = 5432
-  to_port        = 5432
-  cidr_block     = each.value.cidr_block
-}
-
-# Associações das Network ACLs com as subnets
-resource "aws_network_acl_association" "db_receive_traffic_acl_association_1" {
-  network_acl_id = aws_network_acl.db_receive_traffic_acl.id
-  subnet_id      = aws_subnet.db_private_subnet_1.id
-}
-
-resource "aws_network_acl_association" "db_receive_traffic_acl_association_2" {
-  network_acl_id = aws_network_acl.db_receive_traffic_acl.id
-  subnet_id      = aws_subnet.db_private_subnet_2.id
-}
-
-resource "aws_network_acl_association" "db_receive_traffic_acl_association_3" {
-  network_acl_id = aws_network_acl.db_receive_traffic_acl.id
-  subnet_id      = aws_subnet.
+  cidr_block     = local.vpc_cidr
+  from_port      = 1024
+  to_port        = 65535
 }

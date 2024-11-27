@@ -10,7 +10,8 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "public-rt"
+    Name        = "${var.environment}-public-rt"
+    Environment = var.environment
   }
 }
 
@@ -24,7 +25,8 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name = "private-rt"
+    Name        = "${var.environment}-private-rt"
+    Environment = var.environment
   }
 }
 
@@ -33,7 +35,8 @@ resource "aws_route_table" "database" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "database-rt"
+    Name        = "${var.environment}-database-rt"
+    Environment = var.environment
   }
 }
 
