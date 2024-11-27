@@ -1,6 +1,6 @@
 # NACL para subnets do banco de dados
 resource "aws_network_acl" "database" {
-  vpc_id = aws_vpc.main.id
+  vpc_id     = aws_vpc.main.id
   subnet_ids = aws_subnet.database[*].id
 
   tags = {

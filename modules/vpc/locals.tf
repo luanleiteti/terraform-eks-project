@@ -57,8 +57,8 @@ locals {
   }
 
   # Lookup values baseado no ambiente
-  vpc_cidr          = local.vpc_cidr_blocks[var.environment].vpc_cidr
-  public_cidrs      = local.vpc_cidr_blocks[var.environment].public_subnets
-  private_cidrs     = local.vpc_cidr_blocks[var.environment].private_subnets
-  database_cidrs    = local.vpc_cidr_blocks[var.environment].database_subnets
+  vpc_cidr       = local.vpc_cidr_blocks[var.environment].vpc_cidr
+  public_cidrs   = local.vpc_cidr_blocks[var.environment].public_subnets
+  private_cidrs  = local.vpc_cidr_blocks[var.environment].private_subnets
+  database_cidrs = local.vpc_cidr_blocks[var.environment].database_subnets
 } 

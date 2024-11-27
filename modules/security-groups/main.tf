@@ -1,7 +1,7 @@
 resource "aws_security_group" "main_sg_public_ssh" {
   name        = "${var.environment}-security-group-public-ssh"
   description = "Grupo de seguranca para SSH"
-  vpc_id = var.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "Permitir trafego de entrada SSH"
@@ -61,7 +61,7 @@ resource "aws_security_group" "main_sg_public_alb" {
 resource "aws_security_group" "main_sg_private" {
   name        = "${var.environment}-security-group-private"
   description = "Grupo de seguranca privado para instancias EC2"
-  vpc_id = var.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     description     = "SSH do grupo de seguranca SSH publico"
@@ -72,19 +72,19 @@ resource "aws_security_group" "main_sg_private" {
   }
 
   ingress {
-    description = "HTTP do ALB"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
+    description     = "HTTP do ALB"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
     security_groups = [aws_security_group.main_sg_public_alb.id]
   }
 
   ingress {
-    description      = "Todo o trafego das subredes privadas"
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = var.private_subnets_cidr_blocks
+    description = "Todo o trafego das subredes privadas"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = var.private_subnets_cidr_blocks
   }
 
   egress {
@@ -103,14 +103,14 @@ resource "aws_security_group" "main_sg_private" {
 resource "aws_security_group" "main_sg_database" {
   name        = "${var.environment}-security-group-database"
   description = "Grupo de seguranca para banco de dados"
-  vpc_id = var.vpc_id
+  vpc_id      = var.vpc_id
 
 
   ingress {
-    description = "Permitir o trafego de entrada para portas de banco de dados postgres"
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
+    description     = "Permitir o trafego de entrada para portas de banco de dados postgres"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
     security_groups = [aws_security_group.main_sg_private.id]
   }
 

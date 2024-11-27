@@ -30,7 +30,7 @@ resource "aws_internet_gateway" "main" {
 # IP Elástico para o NAT Gateway
 resource "aws_eip" "nat" {
   domain = "vpc"
-  
+
   tags = {
     Name        = "${var.environment}-nat-eip"
     Environment = var.environment
