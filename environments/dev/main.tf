@@ -31,3 +31,30 @@ module "eks" {
   node_group_max_size     = 4
   node_group_min_size     = 1
 }
+
+module "postgresql" {
+  source = "../../modules/rds"
+
+  identifier        = "prod-postgresql"
+  engine_version    = "14.7"
+  instance_class    = "db.t3.small"
+  allocated_storage = 50
+
+  database_name     = "myapp"
+  database_username = "dbadmin"
+  database_password = ""
+
+  multi_az                 = true
+  backup_retention_period  = 30
+  
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
+
+  allowed_cidr_blocks     = ["10.0.0.0/16"]
+  allowed_security_groups = [module.security_groups.security_group_private_id]
+
+  tags = {
+    Environment = "prod"
+    Project     = "myapp"
+  }
+}
