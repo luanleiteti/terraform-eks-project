@@ -2,9 +2,9 @@ resource "aws_lambda_function" "cluster_scheduler" {
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   function_name    = "${var.name_prefix}-cluster-scheduler"
-  role            = aws_iam_role.lambda_role.arn
-  handler         = "cluster_scheduler.lambda_handler"
-  runtime         = "python3.9"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "cluster_scheduler.lambda_handler"
+  runtime          = "python3.9"
 
   environment {
     variables = {
@@ -30,14 +30,14 @@ resource "aws_cloudwatch_event_rule" "start_clusters" {
   name                = "${var.name_prefix}-start-clusters"
   description         = "Start EKS and RDS clusters"
   schedule_expression = var.start_schedule
-  tags               = var.tags
+  tags                = var.tags
 }
 
 resource "aws_cloudwatch_event_rule" "stop_clusters" {
   name                = "${var.name_prefix}-stop-clusters"
   description         = "Stop EKS and RDS clusters"
   schedule_expression = var.stop_schedule
-  tags               = var.tags
+  tags                = var.tags
 }
 
 resource "aws_cloudwatch_event_target" "start_clusters" {

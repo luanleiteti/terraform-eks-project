@@ -87,9 +87,9 @@ variable "tags" {
   description = "Tags para os recursos"
   type        = map(string)
   default     = {}
-} 
+}
 
 variable "security_group_database_id" {
   description = "Lista de IDs dos security groups"
-  type = list(string)
+  type        = list(string)
 }

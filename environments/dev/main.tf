@@ -75,7 +75,7 @@ module "scheduler" {
   eks_cluster_name   = module.eks.cluster_id
   rds_cluster_name   = module.rds.instance_id
   eks_nodegroup_name = module.eks.node_group_name
-  
+
   start_schedule = "cron(0 10 ? * MON-FRI *)"
   stop_schedule  = "cron(0 1 ? * TUE-SAT *)"
 
