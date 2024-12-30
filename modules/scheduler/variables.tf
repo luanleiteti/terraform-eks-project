@@ -31,3 +31,8 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "eks_nodegroup_name" {
+  description = "Nome do node group do EKS"
+  type        = string
+}

@@ -42,7 +42,7 @@ resource "random_password" "postgresql_password" {
   min_numeric      = 2
 }
 
-module "postgresql" {
+module "rds" {
   source = "../../modules/rds"
 
   identifier        = "prod-postgresql"
@@ -64,5 +64,24 @@ module "postgresql" {
   tags = {
     Environment = "prod"
     Project     = "myapp"
+  }
+}
+
+
+module "scheduler" {
+  source = "../../modules/scheduler"
+
+  name_prefix        = "dev"
+  eks_cluster_name   = module.eks.cluster_id
+  rds_cluster_name   = module.rds.instance_id
+  eks_nodegroup_name = module.eks.node_group_name
+  
+  start_schedule = "cron(0 10 ? * MON-FRI *)"
+  stop_schedule  = "cron(0 1 ? * TUE-SAT *)"
+
+  tags = {
+    Environment = "Development"
+    Project     = "ClusterScheduler"
+    Terraform   = "true"
   }
 }

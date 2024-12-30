@@ -32,3 +32,33 @@ output "node_group_role_arn" {
   description = "ARN da role do node group"
   value       = aws_iam_role.eks_node_group.arn
 }
+
+# Node Group Outputs
+output "node_group_name" {
+  description = "Nome do node group EKS"
+  value       = aws_eks_node_group.nodes.node_group_name
+}
+
+output "node_group_arn" {
+  description = "ARN do node group EKS"
+  value       = aws_eks_node_group.nodes.arn
+}
+
+output "node_group_status" {
+  description = "Status do node group EKS"
+  value       = aws_eks_node_group.nodes.status
+}
+
+output "node_group_scaling_config" {
+  description = "Configuração de scaling do node group"
+  value = {
+    desired_size = aws_eks_node_group.nodes.scaling_config[0].desired_size
+    max_size     = aws_eks_node_group.nodes.scaling_config[0].max_size
+    min_size     = aws_eks_node_group.nodes.scaling_config[0].min_size
+  }
+}
+
+output "node_group_instance_types" {
+  description = "Tipos de instância do node group"
+  value       = aws_eks_node_group.nodes.instance_types
+}
