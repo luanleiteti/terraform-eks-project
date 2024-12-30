@@ -88,3 +88,8 @@ variable "tags" {
   type        = map(string)
   default     = {}
 } 
+
+variable "security_group_database_id" {
+  description = "Lista de IDs dos security groups"
+  type = list(string)
+}

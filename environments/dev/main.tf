@@ -32,6 +32,16 @@ module "eks" {
   node_group_min_size     = 1
 }
 
+resource "random_password" "postgresql_password" {
+  length           = 16
+  special          = false
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+  min_special      = 0
+  min_upper        = 2
+  min_lower        = 2
+  min_numeric      = 2
+}
+
 module "postgresql" {
   source = "../../modules/rds"
 
@@ -42,16 +52,14 @@ module "postgresql" {
 
   database_name     = "myapp"
   database_username = "dbadmin"
-  database_password = ""
+  database_password = random_password.postgresql_password.result
 
   multi_az                = true
   backup_retention_period = 30
 
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.private_subnets
-
-  allowed_cidr_blocks     = ["10.0.0.0/16"]
-  allowed_security_groups = [module.security_groups.security_group_private_id]
+  vpc_id                     = module.vpc.vpc_id
+  subnet_ids                 = module.vpc.private_subnets
+  security_group_database_id = [module.security_groups.security_group_database_id]
 
   tags = {
     Environment = "prod"

@@ -46,11 +46,6 @@ output "subnet_group_arn" {
   value       = aws_db_subnet_group.this.arn
 }
 
-output "security_group_id" {
-  description = "ID do security group do RDS"
-  value       = aws_security_group.rds.id
-}
-
 # Informações de Monitoramento
 output "monitoring_role_arn" {
   description = "ARN da role de monitoramento"

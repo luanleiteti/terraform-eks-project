@@ -21,7 +21,7 @@ resource "aws_db_instance" "postgresql" {
 
   # Networking
   db_subnet_group_name   = aws_db_subnet_group.this.name
-  vpc_security_group_ids = [aws_security_group.rds.i]
+  vpc_security_group_ids = var.security_group_database_id
 
   # Monitoramento
   monitoring_interval = 60

@@ -42,3 +42,18 @@ output "security_group_public_ssh_arn" {
   description = "ARN do security group público para SSH"
   value       = aws_security_group.main_sg_public_ssh.arn
 }
+
+output "security_group_database_id" {
+  description = "ID do security group para banco de dados"
+  value       = aws_security_group.main_sg_database.id
+}
+
+output "security_group_database_name" {
+  description = "Nome do security group para banco de dados"
+  value       = aws_security_group.main_sg_database.name
+}
+
+output "security_group_database_arn" {
+  description = "ARN do security group para banco de dados"
+  value       = aws_security_group.main_sg_database.arn
+}
