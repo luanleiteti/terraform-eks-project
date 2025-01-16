@@ -20,7 +20,7 @@ resource "aws_eks_cluster" "main" {
     subnet_ids              = var.private_subnet_ids
     endpoint_private_access = true
     endpoint_public_access  = true
-    security_group_ids      = var.security_group_ids
+
   }
 
   depends_on = [
@@ -58,4 +58,47 @@ resource "aws_eks_node_group" "nodes" {
   tags = {
     Environment = var.environment
   }
+}
+
+resource "helm_release" "aws_load_balancer_controller" {
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+  version    = "1.6.1"
+
+  set {
+    name  = "clusterName"
+    value = aws_eks_cluster.main.name
+  }
+
+  set {
+    name  = "vpcId"
+    value = var.vpc_id
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = kubernetes_service_account.aws_load_balancer_controller.metadata[0].name
+  }
+
+  set {
+    name  = "region"
+    value = var.region
+  }
+
+  set {
+    name  = "enableServiceMutatorWebhook"
+    value = "false"
+  }
+
+  depends_on = [
+    kubernetes_service_account.aws_load_balancer_controller,
+    aws_iam_role.aws_load_balancer_controller
+  ]
 }

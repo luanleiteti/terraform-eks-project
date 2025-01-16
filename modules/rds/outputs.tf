@@ -3,6 +3,7 @@ output "instance_identifier" {
   description = "O identificador da instância RDS"
   value       = aws_db_instance.postgresql.identifier
 }
+
 output "instance_id" {
   description = "ID da instância RDS"
   value       = aws_db_instance.postgresql.id

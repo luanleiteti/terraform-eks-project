@@ -88,12 +88,12 @@ variable "sns_platform_application_arn" {
   default     = null
 }
 
-variable "athena_output_bucket" {
-  description = "Nome do bucket S3 para output do Athena"
-  type        = string
-}
+# variable "athena_output_bucket" {
+#   description = "Nome do bucket S3 para output do Athena"
+#   type        = string
+# }
 
-variable "athena_input_bucket" {
-  description = "Nome do bucket S3 para input do Athena"
-  type        = string
-}
+# variable "athena_input_bucket" {
+#   description = "Nome do bucket S3 para input do Athena"
+#   type        = string
+# }

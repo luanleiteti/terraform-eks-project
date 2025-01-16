@@ -129,24 +129,24 @@ resource "aws_iam_role" "service_account" {
 # }
 
 # Secrets Manager Policy
-resource "aws_iam_role_policy" "secrets" {
-  name = "${var.service_account_name}-secrets-policy"
-  role = aws_iam_role.service_account.id
+# resource "aws_iam_role_policy" "secrets" {
+#   name = "${var.service_account_name}-secrets-policy"
+#   role = aws_iam_role.service_account.id
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ]
-        Resource = var.secrets_arn
-      }
-    ]
-  })
-}
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Effect = "Allow"
+#         Action = [
+#           "secretsmanager:GetSecretValue",
+#           "secretsmanager:DescribeSecret"
+#         ]
+#         Resource = var.secrets_arn
+#       }
+#     ]
+#   })
+# }
 
 # SNS Policy for Notifications
 # resource "aws_iam_role_policy" "sns" {
@@ -424,55 +424,55 @@ resource "aws_iam_role_policy" "aws_load_balancer_controller" {
 }
 
 # Athena Policy
-resource "aws_iam_role_policy" "athena" {
-  name = "${var.service_account_name}-athena-policy"
-  role = aws_iam_role.service_account.id
+# resource "aws_iam_role_policy" "athena" {
+#   name = "${var.service_account_name}-athena-policy"
+#   role = aws_iam_role.service_account.id
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "athena:StartQueryExecution",
-          "athena:GetQueryExecution",
-          "athena:GetQueryResults",
-          "athena:StopQueryExecution",
-          "athena:ListQueryExecutions",
-          "athena:GetWorkGroup",
-          "athena:ListWorkGroups"
-        ]
-        Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "s3:GetBucketLocation",
-          "s3:GetObject",
-          "s3:ListBucket",
-          "s3:ListBucketMultipartUploads",
-          "s3:ListMultipartUploadParts",
-          "s3:AbortMultipartUpload",
-          "s3:PutObject"
-        ]
-        Resource = [
-          "arn:aws:s3:::${var.athena_output_bucket}",
-          "arn:aws:s3:::${var.athena_output_bucket}/*",
-          "arn:aws:s3:::${var.athena_input_bucket}",
-          "arn:aws:s3:::${var.athena_input_bucket}/*"
-        ]
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "glue:GetTable",
-          "glue:GetTables",
-          "glue:GetDatabase",
-          "glue:GetDatabases",
-          "glue:GetPartitions"
-        ]
-        Resource = "*"
-      }
-    ]
-  })
-}
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Effect = "Allow"
+#         Action = [
+#           "athena:StartQueryExecution",
+#           "athena:GetQueryExecution",
+#           "athena:GetQueryResults",
+#           "athena:StopQueryExecution",
+#           "athena:ListQueryExecutions",
+#           "athena:GetWorkGroup",
+#           "athena:ListWorkGroups"
+#         ]
+#         Resource = "*"
+#       },
+#       {
+#         Effect = "Allow"
+#         Action = [
+#           "s3:GetBucketLocation",
+#           "s3:GetObject",
+#           "s3:ListBucket",
+#           "s3:ListBucketMultipartUploads",
+#           "s3:ListMultipartUploadParts",
+#           "s3:AbortMultipartUpload",
+#           "s3:PutObject"
+#         ]
+#         Resource = [
+#           "arn:aws:s3:::${var.athena_output_bucket}",
+#           "arn:aws:s3:::${var.athena_output_bucket}/*",
+#           "arn:aws:s3:::${var.athena_input_bucket}",
+#           "arn:aws:s3:::${var.athena_input_bucket}/*"
+#         ]
+#       },
+#       {
+#         Effect = "Allow"
+#         Action = [
+#           "glue:GetTable",
+#           "glue:GetTables",
+#           "glue:GetDatabase",
+#           "glue:GetDatabases",
+#           "glue:GetPartitions"
+#         ]
+#         Resource = "*"
+#       }
+#     ]
+#   })
+# }
