@@ -16,16 +16,21 @@ def get_nodegroup_sizes(eks_client, cluster_name, nodegroup_name):
     }
 
 def scale_cluster(eks_client, cluster_name, nodegroup_name, action='start'):
-    sizes = get_nodegroup_sizes(eks_client, cluster_name, nodegroup_name)
+    current_sizes = get_nodegroup_sizes(eks_client, cluster_name, nodegroup_name)
     
     if action == 'stop':
         return {
             'desiredSize': 0,
             'minSize': 0,
-            'maxSize': 0
+            'maxSize': current_sizes['maxSize']  # Mantém o maxSize original
         }
     else:
-        return sizes
+        # Quando iniciar, usa o maxSize como desired para garantir a capacidade necessária
+        return {
+            'desiredSize': current_sizes['maxSize'],
+            'minSize': 1,
+            'maxSize': current_sizes['maxSize']
+        }
 
 def lambda_handler(event, context):
     action = event['action']  # 'start' ou 'stop'
@@ -36,7 +41,7 @@ def lambda_handler(event, context):
     
     # Configurações dos clusters
     eks_cluster_name = os.environ['EKS_CLUSTER_NAME']
-    rds_cluster_name = os.environ['RDS_CLUSTER_NAME']
+    rds_instance_name = os.environ['RDS_INSTANCE_NAME']
     eks_nodegroup_name = os.environ['EKS_NODEGROUP_NAME']
     
     try:
@@ -48,15 +53,15 @@ def lambda_handler(event, context):
             scalingConfig=scaling_config
         )
         
-        # Gerenciar RDS
+        # Gerenciar RDS - Usando comandos para instância ao invés de cluster
         if action == 'stop':
-            rds.stop_db_cluster(DBClusterIdentifier=rds_cluster_name)
+            rds.stop_db_instance(DBInstanceIdentifier=rds_instance_name)
         elif action == 'start':
-            rds.start_db_cluster(DBClusterIdentifier=rds_cluster_name)
+            rds.start_db_instance(DBInstanceIdentifier=rds_instance_name)
             
         return {
             'statusCode': 200,
-            'body': f'Successfully {action}ed clusters'
+            'body': f'Successfully {action}ed clusters and database'
         }
         
     except Exception as e:

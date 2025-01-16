@@ -93,3 +93,14 @@ variable "security_group_database_id" {
   description = "Lista de IDs dos security groups"
   type        = list(string)
 }
+
+variable "enable_vector_mode" {
+  description = "Whether to enable vector mode for PostgreSQL"
+  type        = bool
+  default     = false
+}
+
+variable "environment" {
+  description = "Environment name (e.g., prod, staging, dev)"
+  type        = string
+}

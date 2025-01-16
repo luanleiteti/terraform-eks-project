@@ -62,3 +62,26 @@ output "node_group_instance_types" {
   description = "Tipos de instância do node group"
   value       = aws_eks_node_group.nodes.instance_types
 }
+
+output "cluster_security_group_id" {
+  description = "ID do security group do cluster EKS"
+  value       = aws_eks_cluster.main.vpc_config[0].cluster_security_group_id
+}
+
+output "node_security_group_ids" {
+  description = "Security group IDs criados pelo EKS para os nodes"
+  value       = aws_eks_cluster.main.vpc_config[0].security_group_ids
+}
+
+output "service_account_name" {
+  value       = var.service_account_name
+  description = "Nome do service account"
+}
+
+output "cluster_certificate_authority_data" {
+  value = aws_eks_cluster.main.certificate_authority[0].data
+}
+
+output "cluster_name" {
+  value = aws_eks_cluster.main.name
+}

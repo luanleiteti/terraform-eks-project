@@ -10,7 +10,8 @@ resource "aws_lambda_function" "cluster_scheduler" {
     variables = {
       EKS_CLUSTER_NAME   = var.eks_cluster_name
       RDS_CLUSTER_NAME   = var.rds_cluster_name
-      EKS_NODEGROUP_NAME = var.eks_nodegroup_name
+      EKS_NODEGROUP_NAME  = "${var.eks_cluster_name}-nodes"
+      RDS_INSTANCE_NAME   = var.rds_instance_name
     }
   }
 

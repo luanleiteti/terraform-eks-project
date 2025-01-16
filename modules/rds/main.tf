@@ -27,10 +27,23 @@ resource "aws_db_instance" "postgresql" {
   monitoring_interval = 60
   monitoring_role_arn = aws_iam_role.rds_monitoring.arn
 
-  # Parâmetros de segurança
-  parameter_group_name = aws_db_parameter_group.postgresql.name
+  # Parâmetros
+  parameter_group_name = var.enable_vector_mode ? aws_db_parameter_group.postgresql_vector[0].name : aws_db_parameter_group.postgresql[0].name
 
   deletion_protection = true
+  skip_final_snapshot = true
+
+  # Desabilitar otimização de armazenamento
+  storage_type = "gp3"
 
   tags = var.tags
 }
+
+resource "postgresql_extension" "pgvector" {
+  count    = var.enable_vector_mode ? 1 : 0
+  name     = "vector"
+  database = aws_db_instance.postgresql.db_name
+
+  depends_on = [aws_db_instance.postgresql]
+}
+

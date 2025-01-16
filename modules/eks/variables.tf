@@ -69,3 +69,31 @@ variable "node_group_min_size" {
   type        = number
   default     = 1
 }
+
+variable "secrets_arn" {
+  description = "ARN do Secrets Manager"
+  type        = string
+  default     = null
+}
+
+variable "sns_topic_arn" {
+  description = "ARN do tópico SNS para notificações"
+  type        = string
+  default     = null
+}
+
+variable "sns_platform_application_arn" {
+  description = "ARN da aplicação de plataforma SNS (Android/FCM)"
+  type        = string
+  default     = null
+}
+
+variable "athena_output_bucket" {
+  description = "Nome do bucket S3 para output do Athena"
+  type        = string
+}
+
+variable "athena_input_bucket" {
+  description = "Nome do bucket S3 para input do Athena"
+  type        = string
+}

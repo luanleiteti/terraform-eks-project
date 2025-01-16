@@ -50,5 +50,49 @@ resource "aws_iam_role_policy" "lambda_policy" {
   })
 }
 
+resource "aws_iam_role_policy" "eks_permissions" {
+  name = "eks-management-permissions"
+  role = aws_iam_role.lambda_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeNodegroup",
+          "eks:UpdateNodegroupConfig"
+        ]
+        Resource = [
+          "arn:aws:eks:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:nodegroup/${var.eks_cluster_name}/*",
+          "arn:aws:eks:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:cluster/${var.eks_cluster_name}"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "rds_permissions" {
+  name = "rds-management-permissions"
+  role = aws_iam_role.lambda_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "rds:StartDBInstance",
+          "rds:StopDBInstance",
+          "rds:DescribeDBInstances"
+        ]
+        Resource = [
+          "arn:aws:rds:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:db:${var.rds_instance_name}"
+        ]
+      }
+    ]
+  })
+}
+
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}

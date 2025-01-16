@@ -36,3 +36,8 @@ variable "eks_nodegroup_name" {
   description = "Nome do node group do EKS"
   type        = string
 }
+
+variable "rds_instance_name" {
+  description = "Nome da instância RDS"
+  type        = string
+}

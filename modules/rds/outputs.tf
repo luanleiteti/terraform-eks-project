@@ -1,4 +1,8 @@
 # Informações da Instância
+output "instance_identifier" {
+  description = "O identificador da instância RDS"
+  value       = aws_db_instance.postgresql.identifier
+}
 output "instance_id" {
   description = "ID da instância RDS"
   value       = aws_db_instance.postgresql.id
@@ -53,8 +57,8 @@ output "monitoring_role_arn" {
 }
 
 output "parameter_group_id" {
-  description = "ID do parameter group"
-  value       = aws_db_parameter_group.postgresql.id
+  description = "The ID of the DB parameter group"
+  value       = var.enable_vector_mode ? aws_db_parameter_group.postgresql_vector[0].id : aws_db_parameter_group.postgresql[0].id
 }
 
 # Informações de Backup
@@ -94,3 +98,13 @@ output "engine_version" {
   description = "Versão do PostgreSQL"
   value       = aws_db_instance.postgresql.engine_version
 } 
+
+output "secret_arn" {
+  description = "ARN do segredo no Secrets Manager"
+  value       = aws_secretsmanager_secret.rds_credentials.arn
+}
+
+output "cluster_identifier" {
+  description = "O identificador do cluster RDS"
+  value       = aws_db_instance.postgresql.identifier
+}
