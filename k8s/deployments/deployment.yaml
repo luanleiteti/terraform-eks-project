@@ -1,54 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cxas-app
-  namespace: poc-caixa
+  name: http-echo-app
+  namespace: test
   labels:
-    app: cxas-app
+    app: http-echo-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cxas-app
+      app: http-echo-app
   template:
     metadata:
       labels:
-        app: cxas-app
+        app: http-echo-app
     spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
       containers:
-      - name: cxas-app
-        image: 418295695830.dkr.ecr.us-east-1.amazonaws.com/ecr-caixa:cxas-v46
+      - name: http-echo-app
+        image: hashicorp/http-echo
         imagePullPolicy: Always
         ports:
-        - containerPort: 8080
-        env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: "Development"
-        - name: ASPNETCORE_URLS
-          value: "http://+:8080"
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: aws-credentials-poc-caixa
-              key: AWS_ACCESS_KEY_ID
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: aws-credentials-poc-caixa
-              key: AWS_SECRET_ACCESS_KEY
-        - name: AWS_SESSION_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: aws-credentials-poc-caixa
-              key: AWS_SESSION_TOKEN
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
+        - containerPort: 5678

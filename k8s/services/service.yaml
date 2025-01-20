@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cxas-service
-  namespace: poc-caixa
+  name: http-echo-app
+  namespace: test
 spec:
   selector:
-    app: cxas-app
+    app: http-echo-app
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
-  type: ClusterIP
+      targetPorPt: 5678
+  type: ClusterI
